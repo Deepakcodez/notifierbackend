@@ -3,7 +3,11 @@ const { model, Schema } = mongoose;
 
 const userSchema = new mongoose.Schema(
   {
-    
+
+    name: {
+      type: String,
+      required: [true, "please enter name"],
+    },
     email: {
       type: String,
       required: [true, "please enter email"],
