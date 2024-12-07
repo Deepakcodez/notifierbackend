@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
-const uri = 'mongodb://localhost:27017/videoCall'
-
-
+// const uri = 'mongodb://localhost:27017/videoCall'
+const uri = process.env.MONGODB_URI
+ 
 async function connectDB() {
   try {
     await mongoose.connect(uri);
