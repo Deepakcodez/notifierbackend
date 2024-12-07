@@ -6,16 +6,14 @@ const socketio = require("socket.io");
 // Create an Express application
 const app = express();
 
-
 // Create both HTTP and HTTPS servers
 const httpServer = http.createServer(app);
-
 
 // Define allowed origins
 
 const allowedOrigins = [
+  "https://notifier-tau.vercel.app/",
   "http://localhost:5173",
-  
 ];
 
 // CORS options
@@ -27,18 +25,15 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("",cors(corsOptions));
+app.options("", cors(corsOptions));
 
 // Initialize Socket.IO to work with both servers
 const io = socketio(httpServer, {
   cors: corsOptions,
 });
 
-
-
 // Start both servers
 const HTTP_PORT = 8000;
-
 
 httpServer.listen(HTTP_PORT, () => {
   console.log(`HTTP server listening on port ${HTTP_PORT}`);
@@ -52,7 +47,7 @@ const handleSocketConnection = (socket) => {
   console.log("A client connected with id:", socket.id);
 
   socket.on("join-room", (data) => {
-    const {  emailId } = data;
+    const { emailId } = data;
     const roomId = 12;
     console.log(">>>>>>>>>>>user join in : ", roomId, emailId);
     emailToSocketMap.set(emailId, socket.id);
@@ -90,9 +85,7 @@ const handleSocketConnection = (socket) => {
   });
 };
 
-
 io.on("connection", handleSocketConnection);
-
 
 // Define the `/` route
 app.get("/", (req, res) => {
