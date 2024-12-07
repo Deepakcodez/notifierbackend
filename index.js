@@ -15,7 +15,7 @@ const httpServer = http.createServer(app);
 // Define allowed origins
 
 const allowedOrigins = [
-  "https://notifier-tau.vercel.app/",
+  "https://chatter-ji.vercel.app/",
   "http://localhost:5173",
 ];
 
