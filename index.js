@@ -2,9 +2,11 @@ const http = require("http");
 const express = require("express");
 const cors = require("cors");
 const socketio = require("socket.io");
-
+const { connectDB } = require("./utils/db.connection");
 // Create an Express application
 const app = express();
+
+app.use(express.json());
 
 // Create both HTTP and HTTPS servers
 const httpServer = http.createServer(app);
@@ -26,6 +28,9 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.options("", cors(corsOptions));
+
+//connect db
+connectDB();
 
 // Initialize Socket.IO to work with both servers
 const io = socketio(httpServer, {
@@ -91,3 +96,9 @@ io.on("connection", handleSocketConnection);
 app.get("/", (req, res) => {
   res.send("Hello");
 });
+
+//router
+const user = require('./router/user.router')
+
+
+app.use('/api/v1/user', user)
