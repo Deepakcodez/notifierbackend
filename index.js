@@ -75,6 +75,7 @@ const handleSocketConnection = (socket) => {
 
   socket.on("call-declined",({from})=>{
     const socketId = emailToSocketMap.get(from);
+    console.log('>>>>>>>>>>>call declined', socketId, from)
     io.to(socketId || from).emit("call-declined", {from});
   })
 
