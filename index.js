@@ -64,24 +64,24 @@ const handleSocketConnection = (socket) => {
   });
 
   socket.on("call-user", (data) => {
-    const { emailId, to } = data;
+    const { offer, emailId, to } = data;
     const fromEmail = socketToEmailMap.get(socket.id);
     const socketId = emailToSocketMap.get(to);
-
+    console.log(">>>>>>>>>>>call user", socketId, fromEmail, to, offer);
     if (socketId) {
-      io.to(socketId).emit("incoming-call", { from: fromEmail, to: to });
+      io.to(socketId).emit("incoming-call", { from: fromEmail, to: to, offer });
     }
   });
 
-  socket.on("call-declined",({from})=>{
+  socket.on("call-declined", ({ from }) => {
     const socketId = emailToSocketMap.get(from);
-    console.log('>>>>>>>>>>>call declined', socketId, from)
-    io.to(socketId || from).emit("call-declined", {from});
-  })
+    console.log(">>>>>>>>>>>call declined", socketId, from);
+    io.to(socketId || from).emit("call-declined", { from });
+  });
 
   socket.on("call-accepted", ({ emailId, ans }) => {
     const socketId = emailToSocketMap.get(emailId);
-    socket.to(socketId).emit("call-accepted", { ans });
+    if (socketId) io.to(socketId).emit("call-accepted", { ans });
   });
 
   // Handle ICE candidate exchange
@@ -105,7 +105,6 @@ app.get("/", (req, res) => {
 });
 
 //router
-const user = require('./router/user.router')
+const user = require("./router/user.router");
 
-
-app.use('/api/v1/user', user)
+app.use("/api/v1/user", user);
