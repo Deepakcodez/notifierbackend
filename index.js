@@ -73,6 +73,11 @@ const handleSocketConnection = (socket) => {
     }
   });
 
+  socket.on("call-declined",({from})=>{
+    const socketId = emailToSocketMap.get(from);
+    io.to(socketId || from).emit("call-declined", {from});
+  })
+
   socket.on("call-accepted", ({ emailId, ans }) => {
     const socketId = emailToSocketMap.get(emailId);
     socket.to(socketId).emit("call-accepted", { ans });
