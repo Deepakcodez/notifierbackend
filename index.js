@@ -65,11 +65,12 @@ const handleSocketConnection = (socket) => {
 
   socket.on("call-user", (data) => {
     const { offer, emailId, to } = data;
-    const fromEmail = socketToEmailMap.get(socket.id);
-    const socketId = emailToSocketMap.get(to);
-    console.log(">>>>>>>>>>>call user", socketId, fromEmail, to, offer);
+    //emailId --> current user
+    //to --> user to call
+    const from = socketToEmailMap.get(socket.id); // get current user email
+    const socketId = emailToSocketMap.get(to); //remote user socket id
     if (socketId) {
-      io.to(socketId).emit("incoming-call", { from: fromEmail, to: to, offer });
+      io.to(socketId).emit("incoming-call", { from, to, offer });
     }
   });
 
