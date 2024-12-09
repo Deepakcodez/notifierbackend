@@ -104,7 +104,7 @@ const handleSocketConnection = (socket) => {
   socket.on('negotiation-done', ({ answer, to }) => {
     const socketId = emailToSocketMap.get(to);
     if (socketId) {
-      io.to(socketId).emit('negotiation-done', { answer });
+      io.to(socketId).emit('negotiation-done', {from:socket.id, answer });
     }
   });
 
