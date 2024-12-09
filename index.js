@@ -93,6 +93,22 @@ const handleSocketConnection = (socket) => {
     }
   });
 
+  socket.on('negotiation-needed', ({ offer, to }) => {
+    const from = socketToEmailMap.get(socket.id);
+    const socketId = emailToSocketMap.get(to);
+    if (socketId) {
+      io.to(socketId).emit('negotiation-needed', { offer, from });
+    }
+  });
+
+  socket.on('negotiation-done', ({ answer, to }) => {
+    const socketId = emailToSocketMap.get(to);
+    if (socketId) {
+      io.to(socketId).emit('negotiation-done', { answer });
+    }
+  });
+
+
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
   });
